@@ -1,0 +1,23 @@
+#space {
+  background-attachment: fixed;
+  background-color: #31708f;
+  background-size: cover;
+  background-image: url("/images/space.jpg");
+  background-blend-mode: luminosity;
+}
+/*#lights {
+  background: white;
+  background-size: cover;
+  background-image: url("/images/lights.jpg");
+}*/
+/* fixes side padding in portfolio container*/
+.no-pad {
+  padding: 0 !important;
+}
+/* removes white line at the top of portfolio cards*/
+.pmd-card {
+  padding-top: 0;
+}
+#header-text {
+  color: black !important;
+}
