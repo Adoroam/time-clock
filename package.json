@@ -10,5 +10,8 @@
     "timeclock"
   ],
   "author": "ASEP design",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.1"
+  }
 }
