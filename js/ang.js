@@ -27,7 +27,6 @@ app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks)
       // check for active items
       clock.active = clock.list.find(item => item.active === true)
       if (clock.active) {
-        console.log(clock.active.note)
         clock.status = {
           text: 'Clock Out',
           active: true,

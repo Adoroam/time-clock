@@ -57,7 +57,7 @@
     <!-- verified log in -->
     <div class="container" ng-if="ind.userObj">
       <div class="row">
-        <div class="pmd-card pmd-card-default pmd-z-depth">
+        <div class="pmd-card pmd-card-default pmd-z-depth" ng-controller="clockCtrl as clock">
           <!-- header -->
           <div class="pmd-card-title">
             <h2 class="pmd-card-title-text">{{ ind.userObj.user }}
@@ -65,10 +65,7 @@
             </h2>
           </div>
           <!-- body -->
-          <div class="pmd-card-body" ng-controller="clockCtrl as clock">
-            <button type="button" ng-class="clock.status.style"
-            data-target="#clockin" data-toggle="modal"
-            class="btn pmd-ripple-effect pmd-btn-flat">{{ clock.status.text}}</button>
+          <div class="pmd-card-body">
             <table class="table pmd-table">
               <thead>
                 <tr>
@@ -90,6 +87,9 @@
           </div>
           <!-- actions -->
           <div class="pmd-card-actions">
+            <button type="button" ng-class="clock.status.style"
+            data-target="#clockin" data-toggle="modal"
+            class="btn pmd-ripple-effect pmd-btn-flat">{{ clock.status.text}}</button>
             <button type="button" class="btn btn-default pmd-ripple-effect pmd-btn-flat">Show Logs</button>
           </div>
         </div>

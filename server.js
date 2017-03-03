@@ -117,8 +117,12 @@ app.post('/clocks', (req, res) => {
 
 // app.get('/clear', (req, res) => {
 //   Clock.remove({}, () => {
-//     console.log('users removed')
+//     console.log('clock cleared')
 //   })
+//   User.remove({}, () => {
+//     console.log('users cleared')
+//   })
+//  res.redirect('/')
 // })
 
 app.listen(port, () => {
