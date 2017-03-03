@@ -10,14 +10,7 @@ app.controller('indCtrl', ['$scope', '$cookies', 'getUsers', function ($scope, $
     ind.cookieId = cookieSplit[1]
   }
   getUsers.then(d => {
-    let data = d.data
-    ind.userObj = data.find(item => item._id === ind.cookieId)
-  })
-}])
-
-app.controller('loginCtrl', ['$scope', 'getUsers', function ($scope, getUsers) {
-  const log = this
-  getUsers.then(d => {
-    log.data = d.data
+    ind.data = d.data
+    ind.userObj = ind.data.find(item => item._id === ind.cookieId)
   })
 }])
