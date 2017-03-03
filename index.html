@@ -25,7 +25,7 @@
       </div>
     </header>
     <!-- login card -->
-    <div class="container" ng-if="!ind.userObj">
+    <section class="container" ng-if="!ind.userObj">
       <div class="row">
         <div class="pmd-card pmd-card-default pmd-z-depth">
           <div class="pmd-card-body">
@@ -53,12 +53,47 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
     <!-- verified log in -->
-    <div class="container" ng-if="ind.userObj" ng-controller="loginCtrl as log">
-      <h2>Welcome back, {{ ind.userObj.user }}.</h2>
-      <button type="button" class="btn btn-default pmd-ripple-effect">Show Logs</button>
-      <button type="button" class="btn btn-success pmd-ripple-effect">New Timer</button>
+    <div class="container" ng-if="ind.userObj">
+      <div class="row">
+        <div class="pmd-card pmd-card-default pmd-z-depth">
+          <!-- header -->
+          <div class="pmd-card-title">
+            <h2 class="pmd-card-title-text">{{ ind.userObj.user }}
+              <span class="pmd-card-subtitle-text"></span>
+            </h2>
+          </div>
+          <!-- body -->
+          <div class="pmd-card-body" ng-controller="clockCtrl as clock">
+            <button type="button" ng-class="clock.status.style"
+            data-target="#clockin" data-toggle="modal"
+            class="btn pmd-ripple-effect pmd-btn-flat">{{ clock.status.text}}</button>
+            <table class="table pmd-table">
+              <thead>
+                <tr>
+                  <th>note</th>
+                  <th>start</th>
+                  <th>end</th>
+                  <th>total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in clock.list">
+                  <td>{{ item.note }}</td>
+                  <td>{{ item.start | date : 'mediumTime' }}</td>
+                  <td>{{ item.end | date : 'mediumTime' }}</td>
+                  <td>{{ item.total }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- actions -->
+          <div class="pmd-card-actions">
+            <button type="button" class="btn btn-default pmd-ripple-effect pmd-btn-flat">Show Logs</button>
+          </div>
+        </div>
+      </div>
     </div>
 
 <!-- modals -->
@@ -89,6 +124,45 @@
   				<button class="btn pmd-ripple-effect btn-primary" type="submit">Save changes</button>
   				<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Discard</button>
   			</div>
+      </form>
+		</div>
+	</div>
+</div>
+<!-- clockin modal -->
+<div tabindex="-1" class="modal fade" id="clockin" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog" ng-controller="clockCtrl as clock">
+		<div class="modal-content">
+      <form class="form-horizontal" action="/clock" method="post">
+        <!-- body -->
+  			<div class="modal-body">
+          <div class="form-group pmd-textfield col-sm-6">
+            <label class="control-label">User</label>
+            <input type="text" readonly="" value="{{ ind.userObj.user }}" class="mat-input form-control">
+          </div>
+          <div class="form-group pmd-textfield col-sm-6">
+            <label class="control-label">User ID</label>
+            <input type="text" readonly="" value="{{ ind.userObj._id }}" name="clUserId" class="mat-input form-control">
+          </div>
+          <div class="form-group pmd-textfield col-sm-12" ng-if="!clock.status.active">
+            <label class="control-label">Note</label>
+            <input type="text" class="form-control" name="clNote">
+          </div>
+          <div class="form-group pmd-textfield col-sm-6" ng-if="clock.status.active">
+            <label class="control-label">Note</label>
+            <input type="text" readonly="" value="{{ clock.active.note }}" class="mat-input form-control">
+          </div>
+          <div class="form-group pmd-textfield col-sm-6" ng-if="clock.status.active">
+            <label class="control-label">Start Time</label>
+            <input type="text" readonly="" value="{{ clock.active.start | date : 'mediumTime' }}" class="mat-input form-control">
+          </div>
+        </div>
+        <!-- actions -->
+  			<div class="pmd-modal-action col-xs-12">
+          <button type="submit" ng-class="clock.status.style"
+          class="btn pmd-ripple-effect pmd-btn-flat">{{ clock.status.text}}</button>
+  				<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Nevermind</button>
+  			</div>
+        <div class="clearfix"></div>
       </form>
 		</div>
 	</div>

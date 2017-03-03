@@ -24,6 +24,14 @@ const userSchema = mongoose.Schema({
   signup: Date
 })
 const User = mongoose.model('User', userSchema)
+const clockSchema = mongoose.Schema({
+  userid: String,
+  start: Date,
+  end: Date,
+  note: String,
+  active: Boolean
+})
+const Clock = mongoose.model('Clock', clockSchema)
 
 app.get('/', (req, res) => {
   res.redirect('/')
@@ -72,11 +80,50 @@ app.post('/login', (req, res) => {
   })
 })
 
+app.post('/clock', (req, res) => {
+  // look up clock db
+  let userid = req.body.clUserId
+  Clock.findOne({ 'userid': userid, 'active': true }, (err, item) => {
+    if (err) console.error(err)
+    if (item !== null) {
+      item.end = new Date()
+      item.active = false
+      item.save((err, updatedItem) => {
+        if (err) console.error(err)
+      })
+    } else {
+      let note = req.body.clNote ? req.body.clNote : ''
+      let newClock = new Clock({
+        userid: userid,
+        start: new Date(),
+        note: note,
+        active: true
+      })
+      newClock.save((err, clockObj) => { if (err) console.error(err) })
+    }
+  })
+  res.redirect('/')
+})
+app.post('/clocks', (req, res) => {
+  if (req.cookies['user']) {
+    let cookieSplit = req.cookies['user'].split(':')
+    let userid = cookieSplit[1]
+    Clock.find({ 'userid': userid }, (err, list) => {
+      if (err) console.error(err)
+      res.json(list)
+    })
+  }
+})
+
 // app.get('/clear', (req, res) => {
-//   User.remove({}, () => {
+//   Clock.remove({}, () => {
 //     console.log('users removed')
 //   })
 // })
+
+app.listen(port, () => {
+  console.log(`server listening on port ${port}`)
+})
 
 function bastion (pass) {
   let pwarray = pass.split('')
@@ -91,7 +138,3 @@ function bastion (pass) {
   let iteration3 = iteration2.join('')
   return iteration3
 }
-
-app.listen(port, () => {
-  console.log(`server listening on port ${port}`)
-})
