@@ -12,10 +12,86 @@
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <script type="text/javascript" src="js/propeller.js"></script>
     <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-cookies/angular-cookies.min.js"></script>
     <script type="text/javascript" src="js/ang.js"></script>
     <title>ASEP Time-Clock</title>
   </head>
   <body ng-controller="indCtrl as ind">
-    <!-- clean slate -->
+    <header class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 class="pmd-display1 text-center">Time-Clock <small>ASEP Design</small></h1>
+        </div>
+      </div>
+    </header>
+    <!-- login card -->
+    <div class="container" ng-controller="loginCtrl as log" ng-if="!ind.userObj">
+      <div class="row">
+        <div class="pmd-card pmd-card-default pmd-z-depth">
+          <div class="pmd-card-body">
+            <div class="row">
+              <form class="form-horizontal" action="/login" method="post">
+                <div class="col-xs-12">
+                  <div class="form-group pmd-textfield pmd-textfield-floating-label">
+                    <label>User</label>
+                    <select required class="select-simple form-control pmd-select2" name="lname">
+                      <option></option>
+                      <option ng-repeat="d in log.data" value="{{ d.user }}">{{ d.fullName }}</option>
+                    </select>
+                  </div>
+                  <div class="form-group pmd-textfield pmd-textfield-floating-label">
+                    <label class="control-label">Password</label>
+                    <input class="form-control" type="password" name="lpass">
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="pmd-card-actions">
+            <button type="submit" class="btn btn-primary pmd-btn-ripple-effect pmd-btn-flat">Log In</button>
+            <button data-target="#register" data-toggle="modal" class="btn pmd-ripple-effect pmd-btn-flat btn-success" type="button">New User</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- verified log in -->
+    <div class="container" ng-if="ind.userObj" ng-controller="loginCtrl as log">
+      <h2>Welcome back, {{ ind.userObj.user }}.</h2>
+    </div>
+
+
+<!-- modals -->
+<!-- register modal -->
+<div tabindex="-1" class="modal fade" id="register" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header pmd-modal-bordered">
+				<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+				<h2 class="pmd-card-title-text">Registration Form</h2>
+			</div>
+      <form class="form-horizontal" action="/register" method="post">
+  			<div class="modal-body">
+					<div class="form-group pmd-textfield pmd-textfield-floating-label">
+						<label>First and Last Name</label>
+						<input type="text" class="mat-input form-control" name="rname">
+          </div>
+          <div class="form-group pmd-textfield pmd-textfield-floating-label">
+						<label>Username</label>
+						<input type="text" class="mat-input form-control" name="ruser">
+          </div>
+					<div class="form-group pmd-textfield pmd-textfield-floating-label">
+						<label>Password</label>
+						<input type="password" class="mat-input form-control" name="rpass">
+          </div>
+        </div>
+  			<div class="pmd-modal-action">
+  				<button class="btn pmd-ripple-effect btn-primary" type="submit">Save changes</button>
+  				<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Discard</button>
+  			</div>
+      </form>
+		</div>
+	</div>
+</div>
+
   </body>
 </html>
