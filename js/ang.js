@@ -21,6 +21,11 @@ app.controller('indCtrl', ['$scope', '$cookies', 'getUsers', function ($scope, $
 
 app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks) {
   const clock = this
+  clock.status = {
+    text: 'Clock In',
+    active: false,
+    style: 'btn-success'
+  }
   getClocks.then(d => {
     clock.list = d.data
     if (clock.list.length) {
@@ -51,23 +56,6 @@ app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks)
       })
     }
   })
-  // clock.list = []
-  clock.in = function () {
-    clock.startTime = new Date()
-    let item = {
-      start: new Date(),
-      end: false,
-      total: false
-    }
-    clock.list.push(item)
-    clock.active = true
-  }
-  clock.out = function () {
-    let pos = clock.list.length - 1
-    clock.list[pos].end = new Date()
-    clock.list[pos].total = total(pos)
-    clock.active = false
-  }
   function msToTime (duration) {
     let milliseconds = parseInt((duration % 1000) / 100)
     let seconds = parseInt((duration / 1000) % 60)
