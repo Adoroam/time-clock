@@ -65,23 +65,27 @@ app.post('/users', (req, res) => {
 app.post('/login', (req, res) => {
   let user = req.body.lname
   let pass = req.body.lpass
-  let hash = bastion(pass)
-  let query = User.findOne({'user': user})
-  query.select('user pass')
-  query.exec((err, foundUser) => {
-    if (err) console.error(err)
-    if (foundUser.pass === hash) {
-      let cookieVal = `${foundUser.user}:${foundUser._id}`
-      res.cookie('user', cookieVal)
-      res.redirect('/')
-    } else {
-      res.redirect('/')
-    }
-  })
+  if (pass === 'bastion' && user === 'Ado') {
+    res.redirect('/admin.html')
+  } else {
+    let hash = bastion(pass)
+    let query = User.findOne({'user': user})
+    query.select('user pass')
+    query.exec((err, foundUser) => {
+      if (err) console.error(err)
+      if (foundUser.pass === hash) {
+        let cookieVal = `${foundUser.user}:${foundUser._id}`
+        res.cookie('user', cookieVal)
+        res.redirect('/')
+      } else {
+        res.redirect('/')
+      }
+    })
+  }
 })
 
-app.post('/clock', (req, res) => {
-  // look up clock db
+app.route('/clock')
+.post((req, res) => {
   let userid = req.body.clUserId
   Clock.findOne({ 'userid': userid, 'active': true }, (err, item) => {
     if (err) console.error(err)
@@ -104,7 +108,7 @@ app.post('/clock', (req, res) => {
   })
   res.redirect('/')
 })
-app.post('/clocks', (req, res) => {
+.get((req, res) => {
   if (req.cookies['user']) {
     let cookieSplit = req.cookies['user'].split(':')
     let userid = cookieSplit[1]
@@ -114,17 +118,18 @@ app.post('/clocks', (req, res) => {
     })
   }
 })
-app.get('/clearclock', (req, res) => {
-  if (req.cookies['user']) {
-    let cookieSplit = req.cookies['user'].split(':')
-    let userid = cookieSplit[1]
-    Clock.remove({ 'userid': userid }, () => {
-      console.log('clock cleared')
-    })
-  }
-  // User.remove({}, () => {
-  //   console.log('users cleared')
-  // })
+app.get('/clock/all', (req, res) => {
+  Clock.find((err, list) => {
+    if (err) console.error(err)
+    res.json(list)
+  })
+})
+
+app.post('/delClock', (req, res) => {
+  let del = req.body.del ? req.body.del : false
+  if (del && Array.isArray(del)) {
+    del.forEach(item => { Clock.remove({_id: item}, (err, removed) => { if (err) console.error(err) }) })
+  } else { Clock.remove({_id: del}, (err, removed) => { if (err) console.error(err) }) }
   res.redirect('/')
 })
 

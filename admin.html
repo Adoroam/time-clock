@@ -1,0 +1,44 @@
+<html ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/propeller.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/propeller.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-cookies/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="js/ang.js"></script>
+    <title>ASEP Time-Clock</title>
+  </head>
+  <body ng-controller="admCtrl as adm">
+    <div class="container">
+      <div class="row">
+        <table class="table pmd-table">
+          <thead>
+            <tr>
+              <th>user id</th>
+              <th>start</th>
+              <th>end</th>
+              <th>note</th>
+              <th>active</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="x in adm.list">
+              <td>{{ x.userid }}</td>
+              <td>{{ x.start }}</td>
+              <td>{{ x.end }}</td>
+              <td>{{ x.note }}</td>
+              <td>{{ x.active }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

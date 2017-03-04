@@ -57,42 +57,51 @@
     <!-- verified log in -->
     <div class="container" ng-if="ind.userObj">
       <div class="row">
-        <div class="pmd-card pmd-card-default pmd-z-depth" ng-controller="clockCtrl as clock">
-          <!-- header -->
-          <div class="pmd-card-title">
-            <h2 class="pmd-card-title-text">{{ ind.userObj.user }}
-              <span class="pmd-card-subtitle-text"></span>
-            </h2>
+        <form class="form-horizontal" action="/delClock" method="post">
+          <div class="pmd-card pmd-card-default pmd-z-depth" ng-controller="clockCtrl as clock">
+            <!-- header -->
+            <div class="pmd-card-title">
+              <h2 class="pmd-card-title-text">{{ ind.userObj.user }}
+                <span class="pmd-card-subtitle-text"></span>
+              </h2>
+            </div>
+            <!-- body -->
+            <div class="pmd-card-body">
+              <table class="table pmd-table">
+                <thead>
+                  <tr>
+                    <th>note</th>
+                    <th>start</th>
+                    <th>end</th>
+                    <th>total</th>
+                    <th>delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in clock.list" ng-class="clock.isMarked(item)">
+                    <td>{{ item.note }}</td>
+                    <td>{{ item.start | date : 'mediumTime' }}</td>
+                    <td>{{ item.end | date : 'mediumTime' }}</td>
+                    <td>{{ item.total }}</td>
+                    <td>
+                      <div class="pmd-switch">
+                        <label><input type="checkbox" name="del" value="{{ item._id }}" ng-model="item.marked"><span class="pmd-switch-label"></span></label>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- actions -->
+            <div class="pmd-card-actions">
+              <button type="button" ng-class="clock.status.style"
+              data-target="#clockin" data-toggle="modal"
+              class="btn pmd-ripple-effect pmd-btn-flat">{{ clock.status.text}}</button>
+              <!-- <button type="button" class="btn btn-default pmd-ripple-effect pmd-btn-flat">Show Logs</button> -->
+              <button type="submit" class="btn btn-danger pmd-ripple-effect pmd-btn-flat">Delete</button>
+            </div>
           </div>
-          <!-- body -->
-          <div class="pmd-card-body">
-            <table class="table pmd-table">
-              <thead>
-                <tr>
-                  <th>note</th>
-                  <th>start</th>
-                  <th>end</th>
-                  <th>total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="item in clock.list">
-                  <td>{{ item.note }}</td>
-                  <td>{{ item.start | date : 'mediumTime' }}</td>
-                  <td>{{ item.end | date : 'mediumTime' }}</td>
-                  <td>{{ item.total }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- actions -->
-          <div class="pmd-card-actions">
-            <button type="button" ng-class="clock.status.style"
-            data-target="#clockin" data-toggle="modal"
-            class="btn pmd-ripple-effect pmd-btn-flat">{{ clock.status.text}}</button>
-            <!-- <button type="button" class="btn btn-default pmd-ripple-effect pmd-btn-flat">Show Logs</button> -->
-          </div>
-        </div>
+        </form>
       </div>
     </div>
 
