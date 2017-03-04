@@ -129,7 +129,7 @@ app.post('/delClock', (req, res) => {
   let del = req.body.del ? req.body.del : false
   if (del && Array.isArray(del)) {
     del.forEach(item => { Clock.remove({_id: item}, (err, removed) => { if (err) console.error(err) }) })
-  } else { Clock.remove({_id: del}, (err, removed) => { if (err) console.error(err) }) }
+  } else if (del) { Clock.remove({_id: del}, (err, removed) => { if (err) console.error(err) }) }
   if (req.body.adm) {
     res.redirect('/admin.html')
   } else { res.redirect('/') }
