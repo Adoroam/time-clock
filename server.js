@@ -25,10 +25,11 @@ const userSchema = mongoose.Schema({
 })
 const User = mongoose.model('User', userSchema)
 const clockSchema = mongoose.Schema({
+  user: String,
   userid: String,
   start: Date,
   end: Date,
-  note: String,
+  proj: String,
   active: Boolean
 })
 const Clock = mongoose.model('Clock', clockSchema)
@@ -96,11 +97,13 @@ app.route('/clock')
         if (err) console.error(err)
       })
     } else {
-      let note = req.body.clNote ? req.body.clNote : ''
+      let user = req.body.clUser
+      let proj = req.body.clProj
       let newClock = new Clock({
+        user: user,
         userid: userid,
         start: new Date(),
-        note: note,
+        proj: proj,
         active: true
       })
       newClock.save((err, clockObj) => { if (err) console.error(err) })

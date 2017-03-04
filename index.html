@@ -70,7 +70,7 @@
               <table class="table pmd-table">
                 <thead>
                   <tr>
-                    <th>note</th>
+                    <th>project</th>
                     <th>start</th>
                     <th>end</th>
                     <th>total</th>
@@ -79,7 +79,7 @@
                 </thead>
                 <tbody>
                   <tr ng-repeat="item in clock.list" ng-class="clock.isMarked(item)">
-                    <td>{{ item.note }}</td>
+                    <td>{{ item.proj }}</td>
                     <td>{{ item.start | date : 'mediumTime' }}</td>
                     <td>{{ item.end | date : 'mediumTime' }}</td>
                     <td>{{ item.total }}</td>
@@ -146,19 +146,31 @@
   			<div class="modal-body">
           <div class="form-group pmd-textfield col-sm-6">
             <label class="control-label">User</label>
-            <input type="text" readonly="" value="{{ ind.userObj.user }}" class="mat-input form-control">
+            <input type="text" readonly="" value="{{ ind.userObj.user }}" name="clUser" class="mat-input form-control">
           </div>
           <div class="form-group pmd-textfield col-sm-6">
             <label class="control-label">User ID</label>
             <input type="text" readonly="" value="{{ ind.userObj._id }}" name="clUserId" class="mat-input form-control">
           </div>
-          <div class="form-group pmd-textfield col-sm-12" ng-if="!clock.status.active">
-            <label class="control-label">Note</label>
-            <input type="text" class="form-control" name="clNote">
+          <!-- NOTE: project section -->
+          <div ng-if="!clock.status.active">
+            <div class="form-group pmd-textfield pmd-textfield-floating-label col-sm-6" ng-if="!clock.proj.create">
+              <label>Project</label>
+              <select required class="select-simple form-control pmd-select2" name="clProj">
+                <option></option>
+                <option ng-repeat="item in clock.list" value="{{ item.proj }}">{{ item.proj }}</option>
+              </select>
+            </div>
+            <div class="form-group pmd-textfield pmd-textfield-floating-label col-sm-6" ng-if="clock.proj.create">
+              <label class="control-label">New Project</label>
+              <input type="text" class="form-control" name="clProj">
+            </div>
           </div>
-          <div class="form-group pmd-textfield col-sm-6" ng-if="clock.status.active">
-            <label class="control-label">Note</label>
-            <input type="text" readonly="" value="{{ clock.active.note }}" class="mat-input form-control">
+          <div ng-if="clock.status.active">
+            <div class="form-group pmd-textfield pmd-textfield-floating-label col-sm-6">
+              <label class="control-label">Project</label>
+              <input type="text" readonly="" class="form-control" value="{{ clock.active.proj }}">
+            </div>
           </div>
           <div class="form-group pmd-textfield col-sm-6" ng-if="clock.status.active">
             <label class="control-label">Start Time</label>
@@ -170,6 +182,7 @@
           <button type="submit" ng-class="clock.status.style"
           class="btn pmd-ripple-effect pmd-btn-flat">{{ clock.status.text}}</button>
   				<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Nevermind</button>
+  				<button class="btn pmd-ripple-effect btn-primary pmd-btn-flat" type="button" ng-click="clock.addProj()" ng-hide="clock.status.active">{{ clock.proj.btnText }}</button>
   			</div>
         <div class="clearfix"></div>
       </form>

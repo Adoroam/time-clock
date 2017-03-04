@@ -24,7 +24,6 @@ app.controller('indCtrl', ['$scope', '$cookies', 'getUsers', function ($scope, $
 
 app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks) {
   const clock = this
-  clock.isMarked = function (item) { if (item.marked) return 'table-danger' }
   clock.status = {text: 'Clock In', active: false, style: 'btn-success'}
   getClocks.then(d => {
     clock.list = d.data
@@ -50,7 +49,22 @@ app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks)
       })
     }
   })
+  clock.isMarked = function (item) { if (item.marked) return 'table-danger' }
+  clock.proj = {
+    create: false,
+    btnText: 'Create New Project'
+  }
+  clock.addProj = function () {
+    if (clock.proj.create) {
+      clock.proj.create = false
+      clock.proj.btnText = 'Create New Project'
+    } else {
+      clock.proj.create = true
+      clock.proj.btnText = 'Return to List'
+    }
+  }
 }])
+
 app.controller('admCtrl', ['$scope', 'admClocks', function ($scope, admClocks) {
   const adm = this
   adm.isMarked = function (item) { if (item.marked) return 'table-danger' }

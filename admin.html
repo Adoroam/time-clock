@@ -35,22 +35,29 @@
             </div>
             <!-- body -->
             <div class="pmd-card-body">
-                <table class="table pmd-table">
+              <div class="col-sm-4">
+                <div class="form-group pmd-textfield pmd-textfield-floating-label">
+                  <label class="control-label">Filter</label>
+                  <input type="text" class="form-control" ng-model="adm.filter">
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <table class="table table-hover pmd-table">
                   <thead>
                     <tr>
-                      <th>user id</th>
-                      <th>start</th>
-                      <th>end</th>
-                      <th>note</th>
-                      <th>active</th>
+                      <th>User</th>
+                      <th>Start</th>
+                      <th>End</th>
+                      <th>Project</th>
+                      <th><abbr title=""></abbr>ctive</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat="item in adm.list" ng-class="adm.isMarked(item)">
-                      <td>{{ item.userid }}</td>
+                    <tr ng-repeat="item in adm.list | filter : adm.filter" ng-class="adm.isMarked(item)">
+                      <td>{{ item.user }}</td>
                       <td>{{ item.start }}</td>
                       <td>{{ item.end }}</td>
-                      <td>{{ item.note }}</td>
+                      <td>{{ item.proj }}</td>
                       <td>{{ item.active }}</td>
                       <td>
                         <div class="pmd-switch">
@@ -60,6 +67,8 @@
                     </tr>
                   </tbody>
                 </table>
+              </div>
+              <div class="clearfix"></div>
             </div>
             <!-- actions -->
             <div class="pmd-card-actions">
