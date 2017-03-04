@@ -24,31 +24,17 @@ app.controller('indCtrl', ['$scope', '$cookies', 'getUsers', function ($scope, $
 
 app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks) {
   const clock = this
-  clock.isMarked = function (item) {
-    if (item.marked) return 'table-danger'
-  }
-  clock.status = {
-    text: 'Clock In',
-    active: false,
-    style: 'btn-success'
-  }
+  clock.isMarked = function (item) { if (item.marked) return 'table-danger' }
+  clock.status = {text: 'Clock In', active: false, style: 'btn-success'}
   getClocks.then(d => {
     clock.list = d.data
     if (clock.list.length) {
       // check for active items
       clock.active = clock.list.find(item => item.active === true)
       if (clock.active) {
-        clock.status = {
-          text: 'Clock Out',
-          active: true,
-          style: 'btn-warning'
-        }
+        clock.status = {text: 'Clock Out', active: true, style: 'btn-warning'}
       } else {
-        clock.status = {
-          text: 'Clock In',
-          active: false,
-          style: 'btn-success'
-        }
+        clock.status = {text: 'Clock In', active: false, style: 'btn-success'}
       }
       // add total time
       clock.list.forEach(item => {
@@ -67,6 +53,7 @@ app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks)
 }])
 app.controller('admCtrl', ['$scope', 'admClocks', function ($scope, admClocks) {
   const adm = this
+  adm.isMarked = function (item) { if (item.marked) return 'table-danger' }
   admClocks.then(d => {
     adm.list = d.data
     adm.list.forEach(item => {

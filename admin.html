@@ -16,28 +16,58 @@
     <title>ASEP Time-Clock</title>
   </head>
   <body ng-controller="admCtrl as adm">
+    <header class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 class="pmd-display1 text-center">Time-Clock <small>ASEP Design</small></h1>
+        </div>
+      </div>
+    </header>
     <div class="container">
       <div class="row">
-        <table class="table pmd-table">
-          <thead>
-            <tr>
-              <th>user id</th>
-              <th>start</th>
-              <th>end</th>
-              <th>note</th>
-              <th>active</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="x in adm.list">
-              <td>{{ x.userid }}</td>
-              <td>{{ x.start }}</td>
-              <td>{{ x.end }}</td>
-              <td>{{ x.note }}</td>
-              <td>{{ x.active }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <form class="form-horizontal" action="/delClock" method="post">
+          <div class="pmd-card pmd-card-default pmd-z-depth">
+            <!-- header -->
+            <div class="pmd-card-title">
+              <h2 class="pmd-card-title-text">Admin
+                <span class="pmd-card-subtitle-text">Control Panel</span>
+              </h2>
+            </div>
+            <!-- body -->
+            <div class="pmd-card-body">
+                <table class="table pmd-table">
+                  <thead>
+                    <tr>
+                      <th>user id</th>
+                      <th>start</th>
+                      <th>end</th>
+                      <th>note</th>
+                      <th>active</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="item in adm.list" ng-class="adm.isMarked(item)">
+                      <td>{{ item.userid }}</td>
+                      <td>{{ item.start }}</td>
+                      <td>{{ item.end }}</td>
+                      <td>{{ item.note }}</td>
+                      <td>{{ item.active }}</td>
+                      <td>
+                        <div class="pmd-switch">
+                          <label><input type="checkbox" name="del" value="{{ item._id }}" ng-model="item.marked"><span class="pmd-switch-label"></span></label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <!-- actions -->
+            <div class="pmd-card-actions">
+              <input type="hidden" name="adm" value="true">
+              <button type="submit" class="btn btn-danger pmd-ripple-effect pmd-btn-flat">Delete</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </body>
