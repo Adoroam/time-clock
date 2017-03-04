@@ -114,16 +114,19 @@ app.post('/clocks', (req, res) => {
     })
   }
 })
-
-// app.get('/clear', (req, res) => {
-//   Clock.remove({}, () => {
-//     console.log('clock cleared')
-//   })
-//   User.remove({}, () => {
-//     console.log('users cleared')
-//   })
-//  res.redirect('/')
-// })
+app.get('/clearclock', (req, res) => {
+  if (req.cookies['user']) {
+    let cookieSplit = req.cookies['user'].split(':')
+    let userid = cookieSplit[1]
+    Clock.remove({ 'userid': userid }, () => {
+      console.log('clock cleared')
+    })
+  }
+  // User.remove({}, () => {
+  //   console.log('users cleared')
+  // })
+  res.redirect('/')
+})
 
 app.listen(port, () => {
   console.log(`server listening on port ${port}`)

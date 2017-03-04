@@ -27,10 +27,10 @@
     <!-- login card -->
     <section class="container" ng-if="!ind.userObj">
       <div class="row">
-        <div class="pmd-card pmd-card-default pmd-z-depth">
-          <div class="pmd-card-body">
-            <div class="row">
-              <form class="form-horizontal" action="/login" method="post">
+        <form class="form-horizontal" action="/login" method="post">
+          <div class="pmd-card pmd-card-default pmd-z-depth">
+            <div class="pmd-card-body">
+              <div class="row">
                 <div class="col-xs-12">
                   <div class="form-group pmd-textfield pmd-textfield-floating-label">
                     <label>User</label>
@@ -44,14 +44,14 @@
                     <input class="form-control" type="password" name="lpass">
                   </div>
                 </div>
-              </form>
+              </div>
+            </div>
+            <div class="pmd-card-actions">
+              <button type="submit" class="btn btn-primary pmd-btn-ripple-effect pmd-btn-flat">Log In</button>
+              <button data-target="#register" data-toggle="modal" class="btn pmd-ripple-effect pmd-btn-flat btn-success" type="button">New User</button>
             </div>
           </div>
-          <div class="pmd-card-actions">
-            <button type="submit" class="btn btn-primary pmd-btn-ripple-effect pmd-btn-flat">Log In</button>
-            <button data-target="#register" data-toggle="modal" class="btn pmd-ripple-effect pmd-btn-flat btn-success" type="button">New User</button>
-          </div>
-        </div>
+        </form>
       </div>
     </section>
     <!-- verified log in -->

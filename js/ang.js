@@ -7,7 +7,7 @@ app.factory('getClocks', function ($http) {
   return $http.post('/clocks')
 })
 
-app.controller('indCtrl', ['$scope', '$cookies', 'getUsers', 'getClocks', function ($scope, $cookies, getUsers, getClocks) {
+app.controller('indCtrl', ['$scope', '$cookies', 'getUsers', function ($scope, $cookies, getUsers) {
   const ind = this
   if ($cookies.get('user')) {
     let cookieSplit = $cookies.get('user').split(':')
