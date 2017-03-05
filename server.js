@@ -84,6 +84,10 @@ app.post('/login', (req, res) => {
     })
   }
 })
+app.get('/logout', (req, res) => {
+  res.clearCookie('user')
+  res.redirect('/')
+})
 
 app.route('/clock')
 .post((req, res) => {
