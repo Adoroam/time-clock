@@ -50,6 +50,7 @@
                       <th>End</th>
                       <th>Project</th>
                       <th>Active</th>
+                      <th>Total</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -59,6 +60,7 @@
                       <td>{{ item.end }}</td>
                       <td>{{ item.proj }}</td>
                       <td>{{ item.active }}</td>
+                      <td>{{ item.total }}</td>
                       <td>
                         <div class="pmd-switch">
                           <label><input type="checkbox" name="del" value="{{ item._id }}" ng-model="item.marked"><span class="pmd-switch-label"></span></label>
