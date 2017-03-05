@@ -21,3 +21,6 @@
 #header-text {
   color: black !important;
 }
+/*switch colors*/
+.pmd-switch label input[type="checkbox"]:checked + .pmd-switch-label, .togglebutton-default label input[type="checkbox"]:checked + .pmd-switch-label { background-color: rgba(201, 32, 74, 0.5);}
+.pmd-switch label input[type="checkbox"]:checked + .pmd-switch-label::after, .togglebutton-default label input[type="checkbox"]:checked + .pmd-switch-label::after { background-color: #c9204a;}

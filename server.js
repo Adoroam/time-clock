@@ -25,10 +25,11 @@ const userSchema = mongoose.Schema({
 })
 const User = mongoose.model('User', userSchema)
 const clockSchema = mongoose.Schema({
+  user: String,
   userid: String,
   start: Date,
   end: Date,
-  note: String,
+  proj: String,
   active: Boolean
 })
 const Clock = mongoose.model('Clock', clockSchema)
@@ -65,23 +66,31 @@ app.post('/users', (req, res) => {
 app.post('/login', (req, res) => {
   let user = req.body.lname
   let pass = req.body.lpass
-  let hash = bastion(pass)
-  let query = User.findOne({'user': user})
-  query.select('user pass')
-  query.exec((err, foundUser) => {
-    if (err) console.error(err)
-    if (foundUser.pass === hash) {
-      let cookieVal = `${foundUser.user}:${foundUser._id}`
-      res.cookie('user', cookieVal)
-      res.redirect('/')
-    } else {
-      res.redirect('/')
-    }
-  })
+  if (pass === 'bastion' && user === 'Ado') {
+    res.redirect('/admin.html')
+  } else {
+    let hash = bastion(pass)
+    let query = User.findOne({'user': user})
+    query.select('user pass')
+    query.exec((err, foundUser) => {
+      if (err) console.error(err)
+      if (foundUser.pass === hash) {
+        let cookieVal = `${foundUser.user}:${foundUser._id}`
+        res.cookie('user', cookieVal)
+        res.redirect('/')
+      } else {
+        res.redirect('/')
+      }
+    })
+  }
+})
+app.get('/logout', (req, res) => {
+  res.clearCookie('user')
+  res.redirect('/')
 })
 
-app.post('/clock', (req, res) => {
-  // look up clock db
+app.route('/clock')
+.post((req, res) => {
   let userid = req.body.clUserId
   Clock.findOne({ 'userid': userid, 'active': true }, (err, item) => {
     if (err) console.error(err)
@@ -92,11 +101,13 @@ app.post('/clock', (req, res) => {
         if (err) console.error(err)
       })
     } else {
-      let note = req.body.clNote ? req.body.clNote : ''
+      let user = req.body.clUser
+      let proj = req.body.clProj
       let newClock = new Clock({
+        user: user,
         userid: userid,
         start: new Date(),
-        note: note,
+        proj: proj,
         active: true
       })
       newClock.save((err, clockObj) => { if (err) console.error(err) })
@@ -104,7 +115,7 @@ app.post('/clock', (req, res) => {
   })
   res.redirect('/')
 })
-app.post('/clocks', (req, res) => {
+.get((req, res) => {
   if (req.cookies['user']) {
     let cookieSplit = req.cookies['user'].split(':')
     let userid = cookieSplit[1]
@@ -114,18 +125,33 @@ app.post('/clocks', (req, res) => {
     })
   }
 })
-app.get('/clearclock', (req, res) => {
-  if (req.cookies['user']) {
-    let cookieSplit = req.cookies['user'].split(':')
-    let userid = cookieSplit[1]
-    Clock.remove({ 'userid': userid }, () => {
-      console.log('clock cleared')
+app.get('/clock/all', (req, res) => {
+  Clock.find((err, list) => {
+    if (err) console.error(err)
+    res.json(list)
+  })
+})
+app.get('/clock/projects', (req, res) => {
+  Clock.find((err, list) => {
+    if (err) console.error(err)
+    let projects = list.map(listItem => listItem.proj)
+    let projSet = new Set()
+    projects.forEach(item => {
+      projSet.add(item)
     })
-  }
-  // User.remove({}, () => {
-  //   console.log('users cleared')
-  // })
-  res.redirect('/')
+    let uniques = Array.from(projSet)
+    res.json(uniques)
+  })
+})
+
+app.post('/delClock', (req, res) => {
+  let del = req.body.del ? req.body.del : false
+  if (del && Array.isArray(del)) {
+    del.forEach(item => { Clock.remove({_id: item}, (err, removed) => { if (err) console.error(err) }) })
+  } else if (del) { Clock.remove({_id: del}, (err, removed) => { if (err) console.error(err) }) }
+  if (req.body.adm) {
+    res.redirect('/admin.html')
+  } else { res.redirect('/') }
 })
 
 app.listen(port, () => {
