@@ -36,7 +36,9 @@ app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks)
         clock.status = {text: 'Clock In', active: false, style: 'btn-success'}
       }
       // add total time
+      clock.projList = new Set()
       clock.list.forEach(item => {
+        clock.projList.add(item.proj)
         if (item.end && !item.active) {
           let start = new Date(item.start)
           let end = new Date(item.end)
@@ -47,17 +49,18 @@ app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks)
           item.total = time
         }
       })
+      clock.projUnique = Array.from(clock.projList)
     }
   })
   clock.isMarked = function (item) { if (item.marked) return 'table-danger' }
   clock.proj = {
     create: false,
-    btnText: 'Create New Project'
+    btnText: 'New Project'
   }
   clock.addProj = function () {
     if (clock.proj.create) {
       clock.proj.create = false
-      clock.proj.btnText = 'Create New Project'
+      clock.proj.btnText = 'New Project'
     } else {
       clock.proj.create = true
       clock.proj.btnText = 'Return to List'
