@@ -127,6 +127,18 @@ app.get('/clock/all', (req, res) => {
     res.json(list)
   })
 })
+app.get('/clock/projects', (req, res) => {
+  Clock.find((err, list) => {
+    if (err) console.error(err)
+    let projects = list.map(listItem => listItem.proj)
+    let projSet = new Set()
+    projects.forEach(item => {
+      projSet.add(item)
+    })
+    let uniques = Array.from(projSet)
+    res.json(uniques)
+  })
+})
 
 app.post('/delClock', (req, res) => {
   let del = req.body.del ? req.body.del : false

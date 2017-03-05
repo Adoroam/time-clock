@@ -24,7 +24,7 @@
         </div>
       </div>
     </header>
-    <!-- login card -->
+    <!-- NOTE: not logged in -->
     <section class="container" ng-if="!ind.userObj">
       <div class="row">
         <form class="form-horizontal" action="/login" method="post">
@@ -54,7 +54,7 @@
         </form>
       </div>
     </section>
-    <!-- verified log in -->
+    <!-- NOTE: Logged in -->
     <div class="container" ng-if="ind.userObj">
       <div class="row">
         <form class="form-horizontal" action="/delClock" method="post">
@@ -105,8 +105,8 @@
       </div>
     </div>
 
-<!-- modals -->
-<!-- register modal -->
+<!-- NOTE: MODALS -->
+<!-- NOTE: REGISTER modal -->
 <div tabindex="-1" class="modal fade" id="register" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -137,7 +137,7 @@
 		</div>
 	</div>
 </div>
-<!-- clockin modal -->
+<!-- NOTE: CLOCK IN Modal -->
 <div tabindex="-1" class="modal fade" id="clockin" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog" ng-controller="clockCtrl as clock">
 		<div class="modal-content">
@@ -152,13 +152,13 @@
             <label class="control-label">User ID</label>
             <input type="text" readonly="" value="{{ ind.userObj._id }}" name="clUserId" class="mat-input form-control">
           </div>
-          <!-- NOTE: clock in section -->
+          <!-- clock in section -->
           <div ng-if="!clock.status.active">
             <div class="form-group pmd-textfield pmd-textfield-floating-label col-sm-6" ng-if="!clock.proj.create">
               <label>Project</label>
               <select required class="select-simple form-control pmd-select2" name="clProj">
                 <option></option>
-                <option ng-repeat="item in clock.projUnique" value="{{ item }}">{{ item }}</option>
+                <option ng-repeat="item in clock.projects" value="{{ item }}">{{ item }}</option>
               </select>
             </div>
             <div class="form-group pmd-textfield pmd-textfield-floating-label col-sm-6" ng-if="clock.proj.create">
@@ -166,7 +166,7 @@
               <input type="text" class="form-control" name="clProj">
             </div>
           </div>
-          <!-- NOTE: clock out -->
+          <!-- clock out -->
           <div ng-if="clock.status.active">
             <div class="form-group pmd-textfield pmd-textfield-floating-label col-sm-6">
               <label class="control-label">Project</label>

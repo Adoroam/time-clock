@@ -9,7 +9,9 @@ app.factory('getClocks', function ($http) {
 app.factory('admClocks', function ($http) {
   return $http.get('/clock/all')
 })
-
+app.factory('getProj', function ($http) {
+  return $http.get('/clock/projects')
+})
 app.controller('indCtrl', ['$scope', '$cookies', 'getUsers', function ($scope, $cookies, getUsers) {
   const ind = this
   if ($cookies.get('user')) {
@@ -22,7 +24,7 @@ app.controller('indCtrl', ['$scope', '$cookies', 'getUsers', function ($scope, $
   })
 }])
 
-app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks) {
+app.controller('clockCtrl', ['$scope', 'getClocks', 'getProj', function ($scope, getClocks, getProj) {
   const clock = this
   clock.status = {text: 'Clock In', active: false, style: 'btn-success'}
   getClocks.then(d => {
@@ -36,9 +38,7 @@ app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks)
         clock.status = {text: 'Clock In', active: false, style: 'btn-success'}
       }
       // add total time
-      clock.projList = new Set()
       clock.list.forEach(item => {
-        clock.projList.add(item.proj)
         if (item.end && !item.active) {
           let start = new Date(item.start)
           let end = new Date(item.end)
@@ -49,9 +49,9 @@ app.controller('clockCtrl', ['$scope', 'getClocks', function ($scope, getClocks)
           item.total = time
         }
       })
-      clock.projUnique = Array.from(clock.projList)
     }
   })
+  getProj.then(d => { clock.projects = d.data })
   clock.isMarked = function (item) { if (item.marked) return 'table-danger' }
   clock.proj = {
     create: false,
